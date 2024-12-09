@@ -1,0 +1,32 @@
+@MMLib.Fri.MinimalAPI_HostAddress = http://localhost:5152
+
+GET {{MMLib.Fri.MinimalAPI_HostAddress}}/api/contacts/
+Accept: application/json
+
+###
+GET {{MMLib.Fri.MinimalAPI_HostAddress}}/api/contacts/3
+Accept: application/json
+
+###
+POST {{MMLib.Fri.MinimalAPI_HostAddress}}/api/contacts
+Content-Type: application/json
+
+{
+    "FirstName": "John",
+    "LastName": "Doe",
+    "Email": "john.doe@email.com",
+    "PhoneNumber": "555-0101",
+    "Address": "123 Main St, Boston, MA"
+}
+
+###
+PUT {{MMLib.Fri.MinimalAPI_HostAddress}}/api/contacts/33
+Content-Type: application/json
+
+{
+    "FirstName": "Milan",
+    "LastName": "Doe",
+    "Email": "john.doe@email.com",
+    "PhoneNumber": "555-0101",
+    "Address": "123 Main St, Boston, MA"
+}
