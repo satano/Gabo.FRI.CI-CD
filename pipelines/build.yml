@@ -1,0 +1,60 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool: Esw - Production
+  # vmImage: windows-latest
+  # vmImage: ubuntu-20.04
+
+workspace:
+  clean: all
+
+steps:
+  - pwsh: |
+      dotnet build --configuration Release
+    displayName: Build
+    workingDirectory: $(Build.SourcesDirectory)
+
+  - pwsh: |
+      dotnet test --configuration Release --logger trx --results-directory $(Pipeline.Workspace)/TestResults
+    displayName: Test
+    workingDirectory: $(Build.SourcesDirectory)
+
+  - task: PublishTestResults@2
+    displayName: Publish test results
+    condition: not(canceled())
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '*.trx'
+      searchFolder: $(Pipeline.Workspace)/TestResults
+
+  - pwsh: |
+      dotnet publish "$(Build.SourcesDirectory)/MMLib.Fri.MinimalAPI/MMLib.Fri.MinimalAPI.csproj" --configuration Release --output "$(Build.ArtifactStagingDirectory)/api-publish"
+    displayName: Create API artifacts
+    workingDirectory: $(Build.SourcesDirectory)
+
+  - pwsh: |
+      $folder = "$(Build.ArtifactStagingDirectory)/api"
+      if (-not (Test-Path $folder)) {
+        New-Item -Path $folder -ItemType Directory
+      }
+      Compress-Archive -Path "$(Build.ArtifactStagingDirectory)/api-publish/*" -DestinationPath "$(Build.ArtifactStagingDirectory)/api/api.zip"
+    displayName: Zip API artifacts
+    workingDirectory: $(Build.ArtifactStagingDirectory)
+
+  - task: PowerShell@2
+    displayName: Create web artifacts
+    inputs:
+      pwsh: true
+      workingDirectory: $(Build.SourcesDirectory)
+      filePath: $(Build.SourcesDirectory)/pipelines/create-web-artifacts.ps1
+      arguments: -ApiUrl "https://gabo-ci-cd-hdhvchb5dvckcwep.westeurope-01.azurewebsites.net/api/contacts" -InputFolder "$(Build.SourcesDirectory)/MMLib.Fri.MinimalAPI-Web" -OutputFolder "$(Build.ArtifactStagingDirectory)/web"
+
+  - publish: $(Build.ArtifactStagingDirectory)/api
+    artifact: api
+    displayName: Publish API artifacts
+
+  - publish: $(Build.ArtifactStagingDirectory)/web
+    artifact: web
+    displayName: Publish web artifacts
