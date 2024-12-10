@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MMLib.Fri.MinimalAPI-Web", 
 		MMLib.Fri.MinimalAPI-Web\index.html = MMLib.Fri.MinimalAPI-Web\index.html
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMLib.Fri.MinimalAPI.Tests", "MMLib.Fri.MinimalAPI.Tests\MMLib.Fri.MinimalAPI.Tests.csproj", "{9FCD5016-1687-4603-BB7E-E425BE5B5E2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{46C75894-0798-4E99-8B0E-84D3B64F4A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46C75894-0798-4E99-8B0E-84D3B64F4A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46C75894-0798-4E99-8B0E-84D3B64F4A33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FCD5016-1687-4603-BB7E-E425BE5B5E2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FCD5016-1687-4603-BB7E-E425BE5B5E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FCD5016-1687-4603-BB7E-E425BE5B5E2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FCD5016-1687-4603-BB7E-E425BE5B5E2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
