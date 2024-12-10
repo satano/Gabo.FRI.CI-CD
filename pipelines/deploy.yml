@@ -1,0 +1,39 @@
+trigger: none
+
+pool: Esw - Production
+
+resources:
+  pipelines:
+    - pipeline: Build
+      source: FRI - build
+      trigger:
+        branches:
+          include:
+            - refs/heads/main
+
+steps:
+  - download: Build
+    artifact: api
+    displayName: Download API artifacts
+
+  - download: Build
+    artifact: web
+    displayName: Download web artifacts
+
+  - task: AzureRmWebAppDeployment@4
+    displayName: Deploy API
+    inputs:
+      azureSubscription: Gabo
+      WebAppKind: webApp
+      WebAppName: gabo-ci-cd
+      Package: $(Pipeline.Workspace)/Build/api/api.zip
+      ResourceGroupName: gabo-fri-ci-cd
+
+  - task: AzureRmWebAppDeployment@4
+    displayName: Deploy web
+    inputs:
+      azureSubscription: Gabo
+      WebAppKind: webApp
+      WebAppName: gabo-ci-cd-web
+      Package: $(Pipeline.Workspace)/Build/web/web.zip
+      ResourceGroupName: gabo-fri-ci-cd
